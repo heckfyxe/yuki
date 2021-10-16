@@ -6,6 +6,7 @@ edition = "2018"
 [dependencies]
 # Actix
 actix-web = "4.0.0-beta.9"
+tokio = { version = "1.12.0", features = ["full"] }
 
 # Mongo
 mongodb = "2.0.0"
@@ -20,7 +21,11 @@ dotenv = "0.15.0"
 
 # Logging
 env_logger = "0.9.0"
+log = "0.4.14"
 
 # Crypto
 rust-argon2 = "0.8.3"
 rand = "0.8.4"
+
+# Utils
+derive_more = "0.99"

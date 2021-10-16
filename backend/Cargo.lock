@@ -2150,13 +2150,16 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "bson",
+ "derive_more",
  "dotenv",
  "env_logger",
+ "log",
  "mongodb",
  "rand",
  "rust-argon2",
  "serde",
  "serde_json",
+ "tokio",
 ]
 
 [[package]]
