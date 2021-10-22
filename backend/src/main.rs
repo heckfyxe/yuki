@@ -1,3 +1,4 @@
+use actix_cors::Cors;
 use std::io;
 
 use crate::routes::user as user_routes;
@@ -21,11 +22,12 @@ async fn main() -> io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+            .wrap(Cors::permissive())
             .wrap(Logger::default())
             .configure(repositories::init(database.clone()))
             .configure(user_routes::init)
     })
-    .bind("127.0.0.1:8080")?
+    .bind("127.0.0.1:8000")?
     .run()
     .await
 }
