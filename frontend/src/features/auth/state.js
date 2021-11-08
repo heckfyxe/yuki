@@ -2,12 +2,14 @@ import { createEffect, createEvent, createStore } from "effector";
 import axios from "axios";
 
 export const signUpFx = createEffect(async (payload) => {
-  let response = await axios.post("http://localhost:8000/sign_up", payload);
+  let response = await axios.post("http://localhost:8001/sign_up", payload);
   return response.data;
 });
 
 export const loginFx = createEffect(async (payload) => {
-  let response = await axios.post("http://localhost:8000/login", payload);
+  let response = await axios.post("http://localhost:8001/login", payload, {
+    withCredentials: true,
+  });
   return response.data;
 });
 

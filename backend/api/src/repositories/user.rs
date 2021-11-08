@@ -3,7 +3,10 @@ use crate::models::user;
 use crate::models::user::User;
 use crate::repositories::BaseRepository;
 
+use crate::models::claims::Claims;
+use crate::models::error::ApiError::InternalError;
 use bson::{to_document, Bson, Document};
+use jsonwebtoken::{encode, EncodingKey, Header};
 use log::debug;
 use mongodb::bson::doc;
 use mongodb::{Collection, Database};
@@ -47,7 +50,7 @@ impl Repository {
         Ok(Some(record.inserted_id))
     }
 
-    pub async fn login(&self, login: user::Login) -> Result<Option<User>, ApiError> {
+    pub async fn login(&self, login: user::Login) -> Result<Option<String>, ApiError> {
         let user = self
             .collection
             .find_one(doc! { "nickname": login.nickname.clone() }, None)
@@ -62,9 +65,17 @@ impl Repository {
 
         let password_correct = check_password(user.password.clone(), login.password).await?;
 
-        match password_correct {
-            true => Ok(Some(user)),
-            false => Ok(None),
+        if password_correct {
+            let claims = Claims::new(user.id);
+            let token = encode(
+                &Header::default(),
+                &claims,
+                &EncodingKey::from_secret(dotenv::var("JWT_SECRET").unwrap().as_bytes()),
+            )
+            .map_err(|_| InternalError)?;
+            Ok(Some(token))
+        } else {
+            Ok(None)
         }
     }
 }

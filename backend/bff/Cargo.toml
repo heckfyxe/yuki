@@ -1,0 +1,18 @@
+[package]
+name = "yuki-bff"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hyper = { version = "0.14", features = ["full"] }
+hyper-tls = "0.5.0"
+tokio = { version = "1", features = ["full"] }
+tokio-util = "0.6.9"
+cookie = { version = "0.15.1", features = ["secure"] }
+time = "0.2.11"
+dotenv = "0.15.0"
+lazy_static = "1.4.0"
+unicase = "2.6.0"
+thiserror = "1.0.30"

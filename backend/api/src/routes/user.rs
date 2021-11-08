@@ -24,7 +24,7 @@ async fn login(
 ) -> Result<HttpResponse> {
     let result = repository.get_ref().login(user.into_inner()).await?;
     Ok(match result {
-        Some(user) => HttpResponse::Ok().json(user),
+        Some(token) => HttpResponse::Ok().body(token),
         None => HttpResponse::NotFound().finish(),
     })
 }

@@ -1,10 +1,11 @@
-use actix_cors::Cors;
 use std::io;
 
+use crate::routes::chat as chat_routes;
 use crate::routes::user as user_routes;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
 
+mod middlewares;
 mod models;
 mod repositories;
 mod routes;
@@ -22,12 +23,12 @@ async fn main() -> io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .wrap(Cors::permissive())
             .wrap(Logger::default())
             .configure(repositories::init(database.clone()))
             .configure(user_routes::init)
+            .configure(chat_routes::init)
     })
-    .bind("127.0.0.1:8000")?
+    .bind(format!("127.0.0.1:{}", dotenv::var("API_PORT").unwrap()))?
     .run()
     .await
 }
